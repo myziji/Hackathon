@@ -59,12 +59,12 @@ public class MainFrame extends JFrame implements ActionListener {
         } else if (e.getSource() == jMenuItem2) {  
             if (jMenuItem2.getText().equals("Pause")) {  
                 Car.zanTing = false;  
-                mainPanel.zanTing = false;  
+                mainPanel.stop = false;  
                 Light.kaiGuan = false;  
                 jMenuItem2.setText("Next");  
             } else if (jMenuItem2.getText().equals("Next")) {  
                 Car.zanTing = true;  
-                mainPanel.zanTing = true;  
+                mainPanel.stop = true;  
                 Light.kaiGuan = true;  
                 jMenuItem2.setText("Pause");  
             }  
@@ -111,10 +111,9 @@ class StartPanel extends JPanel implements Runnable {
   
 class MainPanel extends JPanel implements Runnable {  
     static CopyOnWriteArrayList<MyCar> vtCar = new CopyOnWriteArrayList<MyCar>();  
-    static CopyOnWriteArrayList<Light> vtLight = new CopyOnWriteArrayList<Light>();  
-    ZhaoShi zs = null;  
+    static CopyOnWriteArrayList<Light> vtLight = new CopyOnWriteArrayList<Light>();   
     Random r = new Random();  
-    boolean zanTing = true;  
+    boolean stop = true;  
     static int carNum = 15;  
     boolean creatMyCar = true;  
   
@@ -133,21 +132,7 @@ class MainPanel extends JPanel implements Runnable {
   
     // 生成肇事车  
     public void init() {  
-        switch (r.nextInt(4)) {  
-        case 0:  
-            zs = new ZhaoShi(315, 0, 0);  
-            break;  
-        case 1:  
-            zs = new ZhaoShi(0, 365, 1);  
-            break;  
-        case 2:  
-            zs = new ZhaoShi(365, 700, 2);  
-            break;  
-        case 3:  
-            zs = new ZhaoShi(700, 315, 3);  
-            break;  
-        }  
-        new Thread(zs).start();  
+         
     }  
   
     // JFrame自动调用paint，paint是JPanel父类的方法，  
@@ -203,18 +188,7 @@ class MainPanel extends JPanel implements Runnable {
                 g.fill3DRect(mycar.x, mycar.y, 35, 20, true);  
             }  
         }  
-        // 画肇事车  
-        g.setColor(Color.red);  
-        if (zs.direct % 2 == 0) {  
-            g.fill3DRect(zs.x, zs.y, 20, 35, true);  
-        } else {  
-            g.fill3DRect(zs.x, zs.y, 35, 20, true);  
-        }  
-        // 画肇事文字  
-        if (zs.text != null) {  
-            g.setFont(new Font("微软雅黑", Font.BOLD, 50));  
-            g.drawString(zs.text.info, zs.text.x, zs.text.y);  
-        }  
+
     }  
   
     // 得到到十字路口要转的方向  
@@ -236,7 +210,7 @@ class MainPanel extends JPanel implements Runnable {
         int newDirect;  
         // TODO Auto-generated method stub  
         while (true) {  
-            if (zanTing) {  
+            if (stop) {  
                 if (vtCar.size() < carNum) {  
                     if (this.creatMyCar) {  
                         switch (r.nextInt(4)) {  

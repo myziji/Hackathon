@@ -1,4 +1,4 @@
-package nidayede;
+package SignalCotrolSystem;
 
 import javax.swing.*;    
 import java.awt.*;    
@@ -32,7 +32,7 @@ public class Set extends JDialog implements ActionListener{
         String carNum[]={"5","6","7","8","9","10","11","12","13",    
                 "14","15","16","17","18","19","20"};    
         jcb2=new JComboBox(carNum);    
-        String num=HuPanel.carNum+"";    
+        String num=MainPanel.carNum+"";    
         jcb2.setSelectedItem(num);    
         jp3.add(jl2);    
         jp3.add(jcb2);    
@@ -48,7 +48,7 @@ public class Set extends JDialog implements ActionListener{
         if(e.getSource()==jb){    
                 
             Car.speed=Integer.parseInt((String) jcb.getSelectedItem());    
-            HuPanel.carNum=Integer.parseInt((String) jcb2.getSelectedItem());    
+            MainPanel.carNum=Integer.parseInt((String) jcb2.getSelectedItem());    
                 
             this.dispose();    
         }else{    

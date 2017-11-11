@@ -1,4 +1,4 @@
-package nidayede;
+package SignalCotrolSystem;
 
 public class Light implements Runnable{    
 	  int x;    
@@ -20,8 +20,8 @@ public class Light implements Runnable{
 	      // TODO Auto-generated method stub    
 	      while(true){    
 	          if(kaiGuan){    
-	              for(int i=0;i<HuPanel.vtLight.size();i++){    
-	                  Light light=HuPanel.vtLight.get(i);     
+	              for(int i=0;i<MainPanel.vtLight.size();i++){    
+	                  Light light=MainPanel.vtLight.get(i);     
 	                  if(light.direct%2==0){      
 	                      light.greenLight=false;      
 	                      light.redLight=true;      
@@ -33,8 +33,8 @@ public class Light implements Runnable{
 	              //切换灯    
 	              this.kaiGuan=false;    
 	          }else{    
-	              for (int i = 0; i < HuPanel.vtLight.size(); i++) {    
-	                  Light light = HuPanel.vtLight.get(i);    
+	              for (int i = 0; i < MainPanel.vtLight.size(); i++) {    
+	                  Light light = MainPanel.vtLight.get(i);    
 	                  if (light.direct % 2 == 0) {    
 	                      light.greenLight = true;    
 	                      light.redLight = false;    

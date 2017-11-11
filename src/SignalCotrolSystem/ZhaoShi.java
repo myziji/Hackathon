@@ -1,4 +1,5 @@
-package nidayede;
+package SignalCotrolSystem;
+
 public class ZhaoShi extends Car implements Runnable{    
 	  Text text;    
 	  public ZhaoShi(int x, int y, int direct) {    
@@ -9,11 +10,11 @@ public class ZhaoShi extends Car implements Runnable{
 	      // 碰到边界，从arrAcr删除    
 	      if (x < 0 || x > 700 || y < 0 || y > 700) {    
 	          this.isStop = false;    
-	          Hufan.hp.init();    
+	          MainFrame.mainPanel.init();    
 	      }    
 	      //是否碰到灯       
-	    for(int i=0;i<Hufan.hp.vtLight.size();i++){      
-	        Light light=Hufan.hp.vtLight.get(i);      
+	    for(int i=0;i<MainFrame.mainPanel.vtLight.size();i++){      
+	        Light light=MainFrame.mainPanel.vtLight.get(i);      
 	        if(direct%2==0){      
 	            if(x>=light.x&&x<=light.x+50&&y>=light.y&&y<=light.y+15){    
 	              if(light.redLight==true&&light.direct==direct){    

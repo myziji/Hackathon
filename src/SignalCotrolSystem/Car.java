@@ -1,5 +1,4 @@
-package nidayede;
-
+package SignalCotrolSystem;
 
 public class Car{    
     int x;    

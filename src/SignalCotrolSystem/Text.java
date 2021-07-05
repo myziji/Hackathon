@@ -1,4 +1,4 @@
-package nidayede;
+package SignalCotrolSystem;
 
 public class Text implements Runnable{    
 	  static int x;    

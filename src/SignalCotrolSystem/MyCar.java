@@ -1,4 +1,4 @@
-package nidayede;
+package SignalCotrolSystem;
 import java.awt.Color;
 import java.util.Iterator;  
 
@@ -93,11 +93,11 @@ public class MyCar extends Car implements Runnable {
             }  
             // 碰到边界，删除  
             if (x < -100 || x > 910 || y < -100 || y > 910) {  
-                Hufan.hp.vtCar.remove(this);  
+                MainFrame.mainPanel.vtCar.remove(this);  
                 this.exit = false;// 如果死亡，退出线程  
                 this.isStop=false;  
             }  
-            Hufan.hp.repaint();  
+            MainFrame.mainPanel.repaint();  
             try {  
                 Thread.sleep(50);  
             } catch (InterruptedException e) {  
@@ -108,7 +108,7 @@ public class MyCar extends Car implements Runnable {
   
     public void panDuan(int x, int y, int direct) {  
         // 车碰车  
-        Iterator<MyCar> iter = Hufan.hp.vtCar.iterator();  
+        Iterator<MyCar> iter = MainFrame.mainPanel.vtCar.iterator();  
         while (iter.hasNext()) {  
             MyCar mycar = iter.next();  
             if (direct % 2 == 0) {  
@@ -130,12 +130,12 @@ public class MyCar extends Car implements Runnable {
                 }  
             }  
             if(this.isStop==false){  
-                Hufan.hp.vtCar.remove(mycar);  
+                MainFrame.mainPanel.vtCar.remove(mycar);  
             }  
         }  
         // 是否碰到灯  
-        for (int i = 0; i < Hufan.hp.vtLight.size(); i++) {  
-            Light light = Hufan.hp.vtLight.get(i);  
+        for (int i = 0; i < MainFrame.mainPanel.vtLight.size(); i++) {  
+            Light light = MainFrame.mainPanel.vtLight.get(i);  
             if (direct % 2 == 0) {  
                 if (x >= light.x && x <= light.x + 50 && y >= light.y && y <= light.y + 15) {  
                     if (light.direct == direct) {  
@@ -143,7 +143,7 @@ public class MyCar extends Car implements Runnable {
                             stopCar = false;  
                         } else {  
                             stopCar = true;  
-                            Iterator<MyCar> iter1 = Hufan.hp.vtCar.iterator();  
+                            Iterator<MyCar> iter1 = MainFrame.mainPanel.vtCar.iterator();  
                             while (iter1.hasNext()) {  
                                 MyCar mycar = iter1.next();  
                                 if (light.direct == mycar.direct) {  
@@ -160,7 +160,7 @@ public class MyCar extends Car implements Runnable {
                             stopCar = false;  
                         } else {  
                             stopCar = true;  
-                            Iterator<MyCar> iter2 = Hufan.hp.vtCar.iterator();  
+                            Iterator<MyCar> iter2 = MainFrame.mainPanel.vtCar.iterator();  
                             while (iter2.hasNext()) {  
                                 MyCar mycar = iter2.next();  
                                 if (light.direct == mycar.direct) {  

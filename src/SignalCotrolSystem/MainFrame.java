@@ -1,4 +1,4 @@
-package nidayede;
+package SignalCotrolSystem;
 
 import javax.swing.*;  
 import java.awt.*;  
@@ -6,41 +6,41 @@ import java.awt.event.*;
 import java.util.*;  
 import java.util.concurrent.CopyOnWriteArrayList;  
   
-public class Hufan extends JFrame implements ActionListener {  
-    static HuPanel hp;  
-    JMenuBar jmb;  
-    JMenu jm1, jm2;  
-    JMenuItem jmi1, jmi2, jmi3, jmi4;  
-    StartPanel sp;  
+public class MainFrame extends JFrame implements ActionListener {  
+    static MainPanel mainPanel;  
+    JMenuBar jMenuBar;  
+    JMenu jMenu1, jMenu2;  
+    JMenuItem jMenuItem1, jMenuItem2, jMenuItem3, jMenuItem4;  
+    StartPanel startPanel;  
   
     public static void main(String[] args) {  
-        new Hufan();  
+        new MainFrame();  
     }  
   
-    public Hufan() {  
-        jmb = new JMenuBar();  
-        jm1 = new JMenu("游戏");  
-        jmi1 = new JMenuItem("开始模拟");  
-        jmi1.addActionListener(this);  
-        jmi2 = new JMenuItem("暂停游戏");  
-        jmi2.addActionListener(this);  
-        jmi3 = new JMenuItem("退出游戏");  
-        jmi3.addActionListener(this);  
-        jm1.add(jmi1);  
-        jm1.add(jmi2);  
-        jm1.add(jmi3);  
-        jm2 = new JMenu("控制");  
-        jmi4 = new JMenuItem("设置");  
-        jmi4.addActionListener(this);  
-        jm2.add(jmi4);  
-        jmb.add(jm1);  
-        jmb.add(jm2);  
-        this.setJMenuBar(jmb);  
+    public MainFrame() {  
+        jMenuBar = new JMenuBar();  
+        jMenu1 = new JMenu("Control System");  
+        jMenuItem1 = new JMenuItem("Start");  
+        jMenuItem1.addActionListener(this);  
+        jMenuItem2 = new JMenuItem("Pause");  
+        jMenuItem2.addActionListener(this);  
+        jMenuItem3 = new JMenuItem("Exit");  
+        jMenuItem3.addActionListener(this);  
+        jMenu1.add(jMenuItem1);  
+        jMenu1.add(jMenuItem2);  
+        jMenu1.add(jMenuItem3);  
+        jMenu2 = new JMenu("Control");  
+        jMenuItem4 = new JMenuItem("Settings");  
+        jMenuItem4.addActionListener(this);  
+        jMenu2.add(jMenuItem4);  
+        jMenuBar.add(jMenu1);  
+        jMenuBar.add(jMenu2);  
+        this.setJMenuBar(jMenuBar);  
   
-        sp = new StartPanel();  
-        new Thread(sp).start();  
-        this.add(sp);  
-        this.setTitle("模拟交通灯");  
+        startPanel = new StartPanel();  
+        new Thread(startPanel).start();  
+        this.add(startPanel);  
+        this.setTitle("Simulate signal");  
         this.setSize(700, 700);  
         this.setResizable(false);  
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);  
@@ -50,28 +50,28 @@ public class Hufan extends JFrame implements ActionListener {
     @Override  
     public void actionPerformed(ActionEvent e) {  
         // TODO Auto-generated method stub  
-        if (e.getSource() == jmi1) {  
-            sp.isLive = false;  
-            this.remove(sp);  
-            hp = new HuPanel();  
-            this.add(hp);  
+        if (e.getSource() == jMenuItem1) {  
+            startPanel.isLive = false;  
+            this.remove(startPanel);  
+            mainPanel = new MainPanel();  
+            this.add(mainPanel);  
             this.setVisible(true);  
-        } else if (e.getSource() == jmi2) {  
-            if (jmi2.getText().equals("暂停游戏")) {  
+        } else if (e.getSource() == jMenuItem2) {  
+            if (jMenuItem2.getText().equals("Pause")) {  
                 Car.zanTing = false;  
-                hp.zanTing = false;  
+                mainPanel.stop = false;  
                 Light.kaiGuan = false;  
-                jmi2.setText("继续游戏");  
-            } else if (jmi2.getText().equals("继续游戏")) {  
+                jMenuItem2.setText("Next");  
+            } else if (jMenuItem2.getText().equals("Next")) {  
                 Car.zanTing = true;  
-                hp.zanTing = true;  
+                mainPanel.stop = true;  
                 Light.kaiGuan = true;  
-                jmi2.setText("暂停游戏");  
+                jMenuItem2.setText("Pause");  
             }  
-        } else if (e.getSource() == jmi3) {  
+        } else if (e.getSource() == jMenuItem3) {  
             System.exit(0);  
-        } else if (e.getSource() == jmi4) {  
-            new Set(this, "设置", true);  
+        } else if (e.getSource() == jMenuItem4) {  
+            new Set(this, "Settings", true);  
         }  
     }  
 }  
@@ -86,7 +86,7 @@ class StartPanel extends JPanel implements Runnable {
         g.setColor(Color.red);  
         g.setFont(new Font("微软雅黑", Font.BOLD, 30));  
         if (info % 2 == 0) {  
-            g.drawString("Java模拟交通", 230, 300);  
+            g.drawString("Control system", 230, 300);  
         }  
     }  
   
@@ -109,16 +109,15 @@ class StartPanel extends JPanel implements Runnable {
     }  
 }  
   
-class HuPanel extends JPanel implements Runnable {  
+class MainPanel extends JPanel implements Runnable {  
     static CopyOnWriteArrayList<MyCar> vtCar = new CopyOnWriteArrayList<MyCar>();  
-    static CopyOnWriteArrayList<Light> vtLight = new CopyOnWriteArrayList<Light>();  
-    ZhaoShi zs = null;  
+    static CopyOnWriteArrayList<Light> vtLight = new CopyOnWriteArrayList<Light>();   
     Random r = new Random();  
-    boolean zanTing = true;  
+    boolean stop = true;  
     static int carNum = 15;  
     boolean creatMyCar = true;  
   
-    public HuPanel() {  
+    public MainPanel() {  
         init();  
         vtLight.add(new Light(306, 285, 0));  
         vtLight.add(new Light(285, 365, 1));  
@@ -133,21 +132,7 @@ class HuPanel extends JPanel implements Runnable {
   
     // 生成肇事车  
     public void init() {  
-        switch (r.nextInt(4)) {  
-        case 0:  
-            zs = new ZhaoShi(315, 0, 0);  
-            break;  
-        case 1:  
-            zs = new ZhaoShi(0, 365, 1);  
-            break;  
-        case 2:  
-            zs = new ZhaoShi(365, 700, 2);  
-            break;  
-        case 3:  
-            zs = new ZhaoShi(700, 315, 3);  
-            break;  
-        }  
-        new Thread(zs).start();  
+         
     }  
   
     // JFrame自动调用paint，paint是JPanel父类的方法，  
@@ -193,7 +178,7 @@ class HuPanel extends JPanel implements Runnable {
             }  
         }  
         // 画车  
-        Iterator<MyCar> iter = Hufan.hp.vtCar.iterator();  
+        Iterator<MyCar> iter = MainFrame.mainPanel.vtCar.iterator();  
         while (iter.hasNext()) {  
             MyCar mycar = iter.next();  
             g.setColor(mycar.colorCar);  
@@ -203,18 +188,7 @@ class HuPanel extends JPanel implements Runnable {
                 g.fill3DRect(mycar.x, mycar.y, 35, 20, true);  
             }  
         }  
-        // 画肇事车  
-        g.setColor(Color.red);  
-        if (zs.direct % 2 == 0) {  
-            g.fill3DRect(zs.x, zs.y, 20, 35, true);  
-        } else {  
-            g.fill3DRect(zs.x, zs.y, 35, 20, true);  
-        }  
-        // 画肇事文字  
-        if (zs.text != null) {  
-            g.setFont(new Font("微软雅黑", Font.BOLD, 50));  
-            g.drawString(zs.text.info, zs.text.x, zs.text.y);  
-        }  
+
     }  
   
     // 得到到十字路口要转的方向  
@@ -236,7 +210,7 @@ class HuPanel extends JPanel implements Runnable {
         int newDirect;  
         // TODO Auto-generated method stub  
         while (true) {  
-            if (zanTing) {  
+            if (stop) {  
                 if (vtCar.size() < carNum) {  
                     if (this.creatMyCar) {  
                         switch (r.nextInt(4)) {  
